@@ -156,7 +156,7 @@ public class Rounds_controller : MonoBehaviour {
             {
                 last_res = Result.Player;
                 saveResults(last_res);
-                Result_panel.GetComponentInChildren<Text>().text = "PLAYER WON";
+                Result_panel.GetComponentInChildren<Text>().text = "Player WON";
             }
             resultsUpdStatus();
             field_c.SetActive(false);
