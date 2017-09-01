@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{273ED0BE-1D81-2C4B-A402-E140ACAA2A42}</ProjectGuid>
+    <ProjectGuid>{25199DD1-64D0-A4A3-D126-57335B0EBF26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -47,13 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AI_control.cs" />
-     <Compile Include="Assets\Scripts\Main_menu.cs" />
+     <Compile Include="Assets\Scripts\Menu_mover.cs" />
      <Compile Include="Assets\Scripts\Rounds_controller.cs" />
      <Compile Include="Assets\Scripts\Score_loader.cs" />
      <Compile Include="Assets\Scripts\diff_turner.cs" />
      <Compile Include="Assets\Scripts\menu_paused.cs" />
-     <Compile Include="Assets\pause_menu.cs" />
-     <None Include="Assets\New Folder\OFL.txt" />
+     <None Include="Assets\Fonts\OFL.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/U5.6/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

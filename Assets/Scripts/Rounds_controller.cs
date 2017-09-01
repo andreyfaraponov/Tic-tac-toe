@@ -37,7 +37,6 @@ public class Rounds_controller : MonoBehaviour {
     public GameObject player_sprite;
     public GameObject ai_sprite;
     public GameObject next_turn_sprite;
-    public Text result_text;
 
     /*          PANELS                  */
     public GameObject Result_panel;
@@ -49,7 +48,6 @@ public class Rounds_controller : MonoBehaviour {
     {
         ai_control = GameObject.Find("AI_player").GetComponent<AI_control>();
         last_res = (Result)PlayerPrefs.GetInt("last");
-        Debug.Log(last_res.ToString());
         field_initialization();
         i = 9;
         game_start();
@@ -62,7 +60,6 @@ public class Rounds_controller : MonoBehaviour {
             if (Input.GetMouseButton(0) && coll.collider.gameObject.name == "empty(Clone)"
                 && i > 0 && turn == player)
             {
-                Debug.Log("Player TURNS");
                 buf = Instantiate(shape_init(), coll.transform.position, coll.transform.rotation);
                 buf.transform.SetParent(GameObject.Find("Field_control").transform);
                 buf.transform.localScale = coll.transform.localScale;
@@ -153,13 +150,13 @@ public class Rounds_controller : MonoBehaviour {
             {
                 last_res = Result.AI;
                 saveResults(last_res);
-                result_text.text = "AI WON";
+                Result_panel.GetComponentInChildren<Text>().text = "AI WON";
             }
             if (turn == player)
             {
                 last_res = Result.Player;
                 saveResults(last_res);
-                result_text.text = "PLAYER WON";
+                Result_panel.GetComponentInChildren<Text>().text = "PLAYER WON";
             }
             resultsUpdStatus();
             field_c.SetActive(false);
@@ -169,7 +166,7 @@ public class Rounds_controller : MonoBehaviour {
         }
         if (i == 0)
         {
-            result_text.text = "THE DRAW";
+            Result_panel.GetComponentInChildren<Text>().text = "THE DRAW";
             last_res = Result.Draw;
             saveResults(last_res);
             field_c.SetActive(false);
@@ -190,32 +187,20 @@ public class Rounds_controller : MonoBehaviour {
             if (field[x, 0].name == field[x, 1].name &&
                 field[x, 0].name == field[x, 2].name &&
                 (field[x, 0].name == "Cross(Clone)" || field[x, 0].name == "Zero(Clone)"))
-            {
-                Debug.Log("WE HAVE CHAMPION!");
                 return true;
-            }
         for (int y = 0; y < 3; y++)
             if (field[0, y].name == field[1, y].name &&
                 field[0, y].name == field[2, y].name &&
                 (field[0, y].name == "Cross(Clone)" || field[0, y].name == "Zero(Clone)"))
-            {
-                Debug.Log("WE HAVE CHAMPION!");
                 return true;
-            }
         if (field[0, 0].name == field[1, 1].name &&
                 field[0, 0].name == field[2, 2].name &&
                 (field[0, 0].name == "Cross(Clone)" || field[0, 0].name == "Zero(Clone)"))
-        {
-            Debug.Log("WE HAVE CHAMPION!");
             return true;
-        }
         if (field[2, 0].name == field[1, 1].name &&
         field[2, 0].name == field[0, 2].name &&
         (field[2, 0].name == "Cross(Clone)" || field[2, 0].name == "Zero(Clone)"))
-        {
-            Debug.Log("WE HAVE CHAMPION!");
             return true;
-        }
         return false;
     }
 }

@@ -62,23 +62,35 @@ public class AI_control : MonoBehaviour
     {
         Vector3 point;
         Vector3 temp;
+        string sh_name;
 
         point = new Vector3(-1, -1, 0);
-        temp = check_crosslines(field);
-        if (temp.z > point.z && temp.x != -1 && temp.y != -1)
-            point = temp;
-        temp = check_horizontal(field);
-        if (temp.z > point.z && temp.x != -1 && temp.y != -1)
-            point = temp;
-        temp = check_vertical(field);
-        if (temp.z > point.z && temp.x != -1 && temp.y != -1)
-            point = temp;
-
+        sh_name = rd_control.shape_init().name + "(Clone)";
         if (field[1, 1].name == "empty(Clone)")
             point = new Vector3(1, 1, 0);
-        else if (field[0, 2].name == "empty(Clone)")
+        else if (field[2, 0].name != sh_name && field[2, 0].name != "empty(Clone)" && field[0, 2].name == "empty(Clone)")
             point = new Vector3(0, 2, 0);
-        Debug.Log(point.x + " " + point.y);
+        else if ((field[0, 2].name != sh_name && field[0, 2].name != "empty(Clone)") && field[2, 0].name == "empty(Clone)")
+            point = new Vector3(2, 0, 0);
+        else if (field[0, 0].name != sh_name && field[0, 0].name != "empty(Clone)" && field[2, 2].name == "empty(Clone)")
+            point = new Vector3(2, 2, 0);
+        else if ((field[2, 2].name != sh_name && field[2, 2].name != "empty(Clone)") && field[0, 0].name == "empty(Clone)")
+            point = new Vector3(0, 0, 0);
+        else if (point.x == -1 || point.y == -1)
+        {
+            temp = check_horizontal(field);
+            if (temp.z == 2 && temp.x != -1 && temp.y != -1)
+                point = temp;
+            temp = check_vertical(field);
+            if (temp.z == 2 && temp.x != -1 && temp.y != -1)
+                point = temp;
+            else
+            {
+                light_turn(ref field);
+                return;
+            }
+        }
+
         buf = Instantiate(rd_control.shape_init(), field[(int)point.x, (int)point.y].transform.position,
                 field[(int)point.x, (int)point.y].transform.rotation);
         buf.transform.SetParent(GameObject.Find("Field_control").transform);
@@ -96,9 +108,8 @@ public class AI_control : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             temp = new GameObject[3] { field[0, i], field[1, i], field[2, i] };
-            for (int z = 1; z <= 2; z++)
-                if (enemy_count(temp) > z && find_empty(temp) >= 0)
-                    result = new Vector3(find_empty(temp), i, z);
+            if (enemy_count(temp) >= 2 && find_empty(temp) >= 0)
+                result = new Vector3(find_empty(temp), i, 2);
         }
         return result;
     }
@@ -112,52 +123,8 @@ public class AI_control : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             temp = new GameObject[3] { field[i, 0], field[i, 1], field[i, 2] };
-            for (int z = 1; z <= 2; z++)
-                if (enemy_count(temp) >= z && find_empty(temp) >= 0)
-                    result = new Vector3(i, find_empty(temp), z);
-        }
-        return result;
-    }
-
-    Vector3 check_crosslines(GameObject[,] field)
-    {
-        Vector3 result;
-        GameObject[] temp;
-        int o;
-        int q;
-
-        o = 0;
-        q = 0;
-        result = new Vector3(-1, -1, 0);
-        for (int i = 0; i < 3; i++)
-        {
-            temp = new GameObject[3] { field[0, 0], field[1, 1], field[2, 2] };
-            if (field[i, i].name != rd_control.shape_init().name && field[i, i].name != "empty(Clone)")
-                o++;
-            if (find_empty(temp) > -1 && o != 3)
-                result = new Vector3(find_empty(temp), find_empty(temp), o);
-        }
-        for (int i = 0; i < 3 && o < 3; i++)
-        {
-            for (int j = 2; j >= 0; j--)
-            {
-                temp = new GameObject[3] { field[0, 2], field[1, 1], field[2, 0] };
-                Debug.Log(field[i, j].name + "x = " + i + "; y = " + j);
-                if (field[i, j].name != rd_control.shape_init().name && field[i, j].name != "empty(Clone)"
-                    && q < 3)
-                    q++;
-                else
-                    return result;
-                if (q > 0 && q > o && q != 3)
-                {
-                    if (find_empty(temp) == 0)
-                        result = new Vector3(0, 2, q);
-                    else if (find_empty(temp) == 1)
-                        result = new Vector3(1, 1, q);
-                    else if (find_empty(temp) == 2)
-                        result = new Vector3(2, 0, q);
-                }
-            }
+            if (enemy_count(temp) == 2 && find_empty(temp) >= 0)
+                result = new Vector3(i, find_empty(temp), 2);
         }
         return result;
     }
