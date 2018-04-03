@@ -1,2 +1,3 @@
 # Tic-tac-toe
-The Game
+A small game of tic-tac-toe. Written on Unity3D.
+Has 3 levels of difficulty AI.
